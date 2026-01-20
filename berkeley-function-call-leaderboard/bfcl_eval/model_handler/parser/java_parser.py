@@ -1,19 +1,13 @@
-from tree_sitter import Language, Parser
 import tree_sitter_java
+from tree_sitter import Language, Parser
 
-JAVA_LANGUAGE = Language(tree_sitter_java.language(), "java")
-
-parser = Parser()
-parser.set_language(JAVA_LANGUAGE)
+JAVA_LANGUAGE = Language(tree_sitter_java.language())
+parser = Parser(language=JAVA_LANGUAGE)
 
 
 def parse_java_function_call(source_code):
     tree = parser.parse(bytes(source_code, "utf8"))
     root_node = tree.root_node
-    sexp_result = root_node.sexp()
-
-    if "ERROR" in sexp_result:
-        raise SyntaxError("Error parsing java the source code.")
 
     def get_text(node):
         """Returns the text represented by the node."""
